@@ -23,6 +23,7 @@ npm install
 ```
 
 After installation finishes follow configuration instructions then run `node index.js` to start the bot.
+要 node 啟用之後，Bot 才會有回應
 
 ## ⚙️ Configuration
 
