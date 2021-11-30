@@ -1,3 +1,8 @@
+Node.js v14.0.0 or newer
+關掉 Node 機器人還是會在聊天室，不過沒聲音，重開之後再 `/play` 就有聲音了
+
+---
+
 ![Node build](https://github.com/eritislami/evobot/actions/workflows/node.yml/badge.svg)
 ![Docker build](https://github.com/eritislami/evobot/actions/workflows/docker.yml/badge.svg)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
