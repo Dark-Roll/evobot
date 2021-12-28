@@ -41,6 +41,11 @@ module.exports = {
     const url = args[0];
     const urlValid = videoPattern.test(args[0]);
 
+    const wrapErrorMessage = (message) => (
+      `Oops! 史黑機器人又出錯了，請.. 請投.. 幣
+      ${message}`
+    )
+
     // Start the playlist if playlist url was provided
     if (!videoPattern.test(args[0]) && playlistPattern.test(args[0])) {
       return message.client.commands.get("playlist").execute(message, args);
@@ -58,8 +63,9 @@ module.exports = {
           }
         });
       } catch (error) {
+        console.log('https.get error')
         console.error(error);
-        return message.reply(error.message).catch(console.error);
+        return message.reply(wrapErrorMessage(error.message)).catch(console.error);
       }
       return message.reply("Following url redirection...").catch(console.error);
     }
@@ -87,8 +93,9 @@ module.exports = {
           duration: songInfo.videoDetails.lengthSeconds
         };
       } catch (error) {
+        console.log('ytdl getInfo error1')
         console.error(error);
-        return message.reply(error.message).catch(console.error);
+        return message.reply(wrapErrorMessage(error.message)).catch(console.error);
       }
     } else if (scRegex.test(url)) {
       try {
@@ -99,8 +106,9 @@ module.exports = {
           duration: Math.ceil(trackInfo.duration / 1000)
         };
       } catch (error) {
+        console.log('scdl getInfo error')
         console.error(error);
-        return message.reply(error.message).catch(console.error);
+        return message.reply(wrapErrorMessage(error.message)).catch(console.error);
       }
     } else {
       try {
@@ -118,12 +126,13 @@ module.exports = {
           duration: songInfo.videoDetails.lengthSeconds
         };
       } catch (error) {
+        console.log('in else error')
         console.error(error);
         
         if (error.message.includes("410")) {
           return message.reply("Video is age restricted, private or unavailable").catch(console.error);
         } else {
-          return message.reply(error.message).catch(console.error);
+          return message.reply(wrapErrorMessage(error.message)).catch(console.error);
         }
       }
     }
@@ -143,6 +152,7 @@ module.exports = {
       await queueConstruct.connection.voice.setSelfDeaf(true);
       play(queueConstruct.songs[0], message);
     } catch (error) {
+      console.log('in the end error')
       console.error(error);
       message.client.queue.delete(message.guild.id);
       await channel.leave();
