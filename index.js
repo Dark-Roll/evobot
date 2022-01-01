@@ -43,12 +43,26 @@ client.on("message", async (message) => {
   if (!message.guild) return;
 
   const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(PREFIX)})\\s*`);
-  if (!prefixRegex.test(message.content)) return;
 
-  const [, matchedPrefix] = message.content.match(prefixRegex);
+  let args
+  let commandName
 
-  const args = message.content.slice(matchedPrefix.length).trim().split(/ +/);
-  const commandName = args.shift().toLowerCase();
+  const userMessage = message.content
+  const videoPattern = /^(https?:\/\/)?(www\.)?(m\.|music\.)?(youtube\.com|youtu\.?be)\/.+$/gi;
+  const playlistPattern = /^.*(list=)([^#\&\?]*).*/gi;
+
+  if (videoPattern.test(userMessage) || playlistPattern.test(userMessage)) {
+    console.log('will play this URL')
+    args = userMessage.trim().split(/ +/);
+    commandName = 'p';
+  } else if (!prefixRegex.test(message.content)) {
+    return;
+  } else {
+    console.log('a normal command')
+    const [, matchedPrefix] = message.content.match(prefixRegex);
+    args = message.content.slice(matchedPrefix.length).trim().split(/ +/);
+    commandName = args.shift().toLowerCase();
+  }
 
   const command =
     client.commands.get(commandName) ||
